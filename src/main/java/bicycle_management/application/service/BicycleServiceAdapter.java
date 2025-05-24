@@ -1,6 +1,7 @@
 package bicycle_management.application.service;
 
 import bicycle_management.application.contracts.BicycleService;
+import bicycle_management.application.exception.InvalidBicycleException;
 import bicycle_management.domain.fleet.entity.Bicycle;
 import bicycle_management.domain.fleet.enums.BicycleStatus;
 import bicycle_management.domain.fleet.repository.BicycleRepository;
@@ -19,8 +20,12 @@ public class BicycleServiceAdapter implements BicycleService {
   @Override
   public Bicycle addBicycle(
       String id, String model, String location, LocalDateTime lastMaintenanceDate) {
-    Bicycle bicycle =
-        new Bicycle(id, model, BicycleStatus.AVAILABLE, location, lastMaintenanceDate);
+    Bicycle bicycle;
+    try {
+      bicycle = new Bicycle(id, model, BicycleStatus.AVAILABLE, location, lastMaintenanceDate);
+    } catch (IllegalArgumentException e) {
+      throw new InvalidBicycleException(e);
+    }
     bicycle = bicycleRepository.save(bicycle);
     return bicycle;
   }

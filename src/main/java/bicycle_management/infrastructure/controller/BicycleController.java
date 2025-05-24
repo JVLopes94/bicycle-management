@@ -15,9 +15,13 @@ public class BicycleController {
   }
 
   public BicycleDetailsDTO addBicycle(AddBicycleDTO dto) {
-    return BicycleDetailsDTO.from(
-        bicycleService.addBicycle(
-            dto.id(), dto.model(), dto.location(), dto.lastMaintenanceDate()));
+    try {
+      return BicycleDetailsDTO.from(
+          bicycleService.addBicycle(
+              dto.id(), dto.model(), dto.location(), dto.lastMaintenanceDate()));
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   public BicycleDetailsDTO getBicycleById(String id) {
@@ -30,7 +34,8 @@ public class BicycleController {
   }
 
   public BicycleDetailsDTO updateBicyclePutUnderMaintenance(String id) {
-    Bicycle updatedBicycle = bicycleService.updateBicycleStatus(id, BicycleStatus.UNDER_MAINTENANCE);
+    Bicycle updatedBicycle =
+        bicycleService.updateBicycleStatus(id, BicycleStatus.UNDER_MAINTENANCE);
     return BicycleDetailsDTO.from(updatedBicycle);
   }
 
