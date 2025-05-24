@@ -65,7 +65,7 @@ public class Bicycle {
     return model;
   }
 
-  public BicycleStatus getStatus() {
+  public String getStatus() {
     return status;
   }
 
